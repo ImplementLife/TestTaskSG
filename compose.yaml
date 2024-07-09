@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  uaa:
+    build:
+      context: UAA
+      dockerfile: Dockerfile
+    depends_on:
+      - apikey-auth-provider
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+  apikey-auth-provider:
+    build:
+      context: apikey-auth-provider
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - app-network
+  resource-server:
+    build:
+      context: ResourceServer
+      dockerfile: Dockerfile
+    depends_on:
+      - uaa
+    ports:
+      - "8083:8083"
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge

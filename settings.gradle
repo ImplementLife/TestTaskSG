@@ -1,0 +1,5 @@
+rootProject.name = 'TestTaskSG'
+include 'UAA'
+include 'apikey-auth-provider'
+include 'ResourceServer'
+
