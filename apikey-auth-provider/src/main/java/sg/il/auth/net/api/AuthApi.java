@@ -24,6 +24,6 @@ public class AuthApi {
 
     @PostMapping("/validate")
     public boolean validate(@RequestBody String token) {
-        return authService.validateAccessToken(token);
+        return authService.validateToken(token);
     }
 }

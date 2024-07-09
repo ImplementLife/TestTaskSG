@@ -15,7 +15,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ExtendWith({ MockitoExtension.class })
+@ExtendWith({MockitoExtension.class})
 @SpringBootTest
 public class UserAuthServiceTest {
 

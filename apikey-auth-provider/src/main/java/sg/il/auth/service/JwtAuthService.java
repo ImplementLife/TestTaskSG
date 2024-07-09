@@ -10,9 +10,9 @@ import sg.il.auth.data.dto.UserAuthDto;
 
 import javax.annotation.PostConstruct;
 import java.time.Duration;
-import java.util.*;
-
-import static java.lang.Long.valueOf;
+import java.util.Base64;
+import java.util.Date;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -32,6 +32,7 @@ public class JwtAuthService {
     }
 
     public String createToken(UserAuthDto userAuthDto) {
+        log.debug("createToken");
         JWTCreator.Builder builder = createToken(userAuthDto, lifetime);
         String token = builder
             .withClaim("id", userAuthDto.getId())
@@ -51,7 +52,8 @@ public class JwtAuthService {
         return builder;
     }
 
-    public boolean validateAccessToken(String token) {
+    public boolean validateToken(String token) {
+        log.debug("validateToken");
         try {
             verifier.verify(token);
         } catch (Exception e) {

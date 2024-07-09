@@ -24,8 +24,11 @@ public class LogFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         String requestURI = req.getRequestURI();
 
-        chain.doFilter(request, response);
-        HttpServletResponse res = (HttpServletResponse) response;
-        log.debug("request: [" + requestURI + "] status: " + res.getStatus());
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            HttpServletResponse res = (HttpServletResponse) response;
+            log.debug("request: {} [{}] status: {}", req.getMethod(), requestURI, res.getStatus());
+        }
     }
 }

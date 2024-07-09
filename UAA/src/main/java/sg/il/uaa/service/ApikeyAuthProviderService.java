@@ -8,24 +8,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import sg.il.uaa.data.dto.apikeyauthprovider.UserAuthDto;
 
+import javax.annotation.PostConstruct;
+
 @Slf4j
 @Service
 public class ApikeyAuthProviderService {
-
-    @Value("${sg.il.uaa.url.apikey-auth-provider}")
-    private String apikeyAuthProviderUrl;
-
     @Autowired
     private RestTemplate restTemplate;
 
+    @Value("${sg.il.uaa.url.apikey-auth-provider}")
+    private String apikeyAuthProviderUrl;
+    private String authCreateUrl;
+    private String authValidateUrl;
+
+    @PostConstruct
+    private void postConstruct() {
+        authCreateUrl = apikeyAuthProviderUrl + "/auth/create";
+        authValidateUrl = apikeyAuthProviderUrl + "/auth/validate";
+    }
+
     public String createToken(UserAuthDto userAuthDto) {
-        ResponseEntity<String> response = restTemplate.postForEntity(apikeyAuthProviderUrl + "/auth/create", userAuthDto, String.class);
+        log.debug("createToken");
+        ResponseEntity<String> response = restTemplate.postForEntity(authCreateUrl, userAuthDto, String.class);
         String token = response.getBody();
         return token;
     }
 
     public boolean validToken(String token) {
-        ResponseEntity<Boolean> response = restTemplate.postForEntity(apikeyAuthProviderUrl + "/auth/validate", token, Boolean.class);
+        log.debug("validToken");
+        ResponseEntity<Boolean> response = restTemplate.postForEntity(authValidateUrl, token, Boolean.class);
         Boolean isTokenValid = response.getBody();
         return isTokenValid;
     }
